@@ -1,16 +1,13 @@
 package conceito_fiscal;
 
-import imposto.CalcImposto;
+import imposto.Imposto_Calc;
 import java.util.ArrayList;
 
-public class NF 
+public class NF extends NF_Abstract
 {
-	private ArrayList<IV> IVs_;
-	private CalcImposto calcImposto_;
-	
 	public NF(){
 		IVs_ = new ArrayList<IV>();
-		calcImposto_ = new CalcImposto();
+		calcImposto_ = new Imposto_Calc();
 	}
 	public void addIV(IV item){
 		IVs_.add(item);
