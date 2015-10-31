@@ -97,7 +97,18 @@ public class demo
 		// Posso no máximo alterar o seu produto ou serviço usando um Setter,
 		//  mas não removê-lo, pois o campo PS de item é privado.
 		item.setPS_(ps2);
+		produto = (PS_Concrete) item.getPS_();
 		assertEquals(ps2, produto);
+	}
+	
+	@Test
+	public void test_Requisito_04(){
+		/**************************************/
+		// Requisito #04:
+		// Restrição legal: Um P/S deve sempre pertencer a um IV ou a um outro P/S.
+		/**************************************/
+		
+		
 	}
 
 }
