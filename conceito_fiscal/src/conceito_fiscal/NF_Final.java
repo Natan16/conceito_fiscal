@@ -6,7 +6,7 @@ public class NF_Final extends NF_Abstract
 		// Essa NF deve ser igual a nf, porém deve ser final.
 	}
 	public int calculaImposto(){
-		return calcImposto_.tax(IVs_);
+		return Imposto_Facade_.tax(IVs_);
 	}
 }
 

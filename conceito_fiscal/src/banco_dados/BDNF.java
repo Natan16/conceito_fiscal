@@ -6,6 +6,8 @@ import conceito_fiscal.NF;
 public class BDNF 
 {
 	private final ArrayList<NF> NFs_;
+	
+	// Construtor de BDNF usando Mock
 	public BDNF(){
 		BDNF_MockDados Mock = new BDNF_MockDados();
 		NFs_ = new ArrayList<NF>(Mock.getNFs_());

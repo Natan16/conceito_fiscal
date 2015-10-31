@@ -3,20 +3,18 @@ package conceito_fiscal;
 public class NF_Builder 
 {
 	private NF nf_;
-	private IV iv__;
 	private PS_Concrete ps_;
-	
-	public NF_Builder()
-	{
+
+	// Builder básico de NF
+	public NF constructNF(){
 		nf_ = new NF();
-		String categoria = "A";
-		ps_ = new PS_Concrete(categoria, null);
-		int quant = 1;
-		int desc = 10;
-		iv__ = new IV(nf_, ps_, quant, desc);
-		nf_.addIV(iv__);
-	}
-	public NF getNF(){
+		ps_ = new PS_Concrete("produto","A", null);
+		nf_.addNewIV(ps_, 1, 10);
 		return nf_;
+	}
+	
+	// Builder de NF final
+	public NF_Final constructFinalNF(NF nf){
+		return new NF_Final(nf);
 	}
 }

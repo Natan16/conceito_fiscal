@@ -13,6 +13,9 @@ public class BDNF_Facade
 	}
 		
 	// Métodos Facade:
+	public BDNF getBDNFinstance(){
+		return BDNF.getInstance();
+	}
 	public void adicionaNF(NF nf){
 		BDNF.getInstance().adicionaNF(nf);
 	}
