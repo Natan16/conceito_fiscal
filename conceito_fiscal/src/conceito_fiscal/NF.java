@@ -1,15 +1,23 @@
 package conceito_fiscal;
 
 import imposto.Imposto_Facade;
+
 import java.util.ArrayList;
-import banco_dados.BDNF_Facade;
 
 public class NF extends NF_Abstract
 {
-	public NF(){
-		BDNF_Facade_ = BDNF_Facade.getInstance();
-		Imposto_Facade_ = Imposto_Facade.getInstance();
+	public NF() {
 		IVs_ = new ArrayList<IV>();
+	}
+	
+	// Checagem do Status da NF.
+	@Override
+	public String getStatus() {
+		return "NF em elaboração";
+	}
+	@Override
+	public boolean isFinal() {
+		return false;
 	}
 	
 	/**********************************/
@@ -27,6 +35,9 @@ public class NF extends NF_Abstract
 	public IV getIV(int ID){
 		return IVs_.get(ID);
 	}
+	public ArrayList<IV> getIVs(){
+		return IVs_;
+	}
 	// Remove IV da lista IVs, desde que ela não fique vazia
 	public void removeIV(int ID){
 		if (IVs_.size() > 1)
@@ -40,7 +51,7 @@ public class NF extends NF_Abstract
 	/*       Cálculo de Impostos      */
 	/**********************************/
 	public int calculaImposto(){
-		return Imposto_Facade_.tax(IVs_);
+		return Imposto_Facade.tax(IVs_);
 	}
 }
 

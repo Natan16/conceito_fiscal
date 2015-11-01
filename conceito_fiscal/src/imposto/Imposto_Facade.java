@@ -14,7 +14,7 @@ public class Imposto_Facade
 	}
 	
 	// Métodos Facade:
-	public int tax(ArrayList<IV> iVs_){
+	public static int tax(ArrayList<IV> iVs_){
 		return Imposto_Calc.getInstance().tax(iVs_);
 	}
 }

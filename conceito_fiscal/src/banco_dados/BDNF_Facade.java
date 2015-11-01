@@ -1,6 +1,7 @@
 package banco_dados;
 
 import conceito_fiscal.NF;
+import conceito_fiscal.NF_Final;
 
 public class BDNF_Facade 
 {
@@ -13,13 +14,13 @@ public class BDNF_Facade
 	}
 		
 	// Métodos Facade:
-	public BDNF getBDNFinstance(){
+	public static BDNF getBDNFinstance(){
 		return BDNF.getInstance();
 	}
-	public void adicionaNF(NF nf){
-		BDNF.getInstance().adicionaNF(nf);
+	public static NF_Final getNF(int ID){
+		return BDNF.getInstance().getNF(ID);
 	}
-	public void getNF(int ID){
-		BDNF.getInstance().getNF(ID);
+	public static NF_Final validateNF(NF nf){
+		return BDNF.getInstance().validateNF(nf);
 	}
 }
