@@ -27,6 +27,9 @@ public class IV
 	}
 
 	// Gerencia o produto referido pelo IV
+	public String getPSname_(){
+		return PS_.getNome();
+	}
 	public PS_Abstract getPS_() {
 		return PS_;
 	}

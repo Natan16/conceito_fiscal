@@ -14,10 +14,10 @@ public class demo
 {
 	// Variáveis usadas para os testes
 	static NF_Builder builderNF_;
-	PS_Concrete produto, ps1, ps2;
-	IV item, item1;
-	NF myNF_;
-	
+	NF_Final finalMyNF_, finalNf1_, finalNf2_;
+	PS_Concrete produto_, ps1_, ps2_;
+	NF myNF_, nf1_, nf2_;
+	IV item_, item1_;
 	
 	// Algumas classes maiores e mais complexas são criadas
 	//  apenas uma vez BeforeClass, como os bancos de dados:
@@ -31,8 +31,8 @@ public class demo
 	@Before
 	public void setUp() throws Exception {
 		myNF_ = builderNF_.constructNF();
-		ps1 = BDPS_Facade.getPS(3);
-		ps2 = BDPS_Facade.getPS(7);
+		ps1_ = BDPS_Facade.getPS(3);
+		ps2_ = BDPS_Facade.getPS(7);
 	}
 
 	@After
@@ -46,7 +46,7 @@ public class demo
 	/**************************************/
 
 	@Test
-	public void teste_Requisito_01() {
+	public void test_Requisito_01() {
 		/**************************************/
 		// Requisito #01:
 		// Restrição legal: NF não pode ter zero IV. Deve ter 1 ou mais.
@@ -58,27 +58,27 @@ public class demo
 		
 		// Quando tentamos remover algum elemento da NF,
 		//    a NF garante que nunca ficará vazia.
-		myNF_.removeIV(1);
+		myNF_.removeID(1);
 		assertEquals(1, myNF_.sizeIVs());
 	}
 	
 	@Test
-	public void teste_Requisito_02() {
+	public void test_Requisito_02() {
 		/**************************************/
 		// Requisito #02:
 		// Restrição legal: Todo IV deve pertencer a exatamente uma NF.
 		/**************************************/
 		// Os IVs são criados dentro da própria NF, garantindo que
 		//   eles sempre irão pertencer a exatamente uma NF:
-		item = myNF_.addNewIV(ps1, 2, 100);
-		assertEquals(myNF_, item.getNF_());
+		item_ = myNF_.addNewIV(ps1_, 2, 100);
+		assertEquals(myNF_, item_.getNF_());
 		
 		// Como a NF do IV é determinada em seu construtor e o campo
 		//  NF de IV é privado, cada IV irá pertencer sempre àquela mesma NF. 
 	}
 	
 	@Test
-	public void teste_Requisito_03() {
+	public void test_Requisito_03() {
 		/**************************************/
 		// Requisito #03:
 		// Restrição legal: Todo IV se referirá a exatamente um produto ou serviço.
@@ -86,15 +86,15 @@ public class demo
 		// Os IVs são criados dentro do método addNewIV da NF, em que
 		//   um de seus parâmetros é um dado produto PS. Assim todo
 		//   IV se referirá sempre a exatamente um produto ou serviço PS.
-		item = myNF_.addNewIV(ps1, 2, 100);
-		produto = (PS_Concrete) item.getPS_();
-		assertEquals(ps1, produto);
+		item_ = myNF_.addNewIV(ps1_, 2, 100);
+		produto_ = (PS_Concrete) item_.getPS_();
+		assertEquals(ps1_, produto_);
 		
 		// Posso no máximo alterar o seu produto ou serviço usando um Setter,
 		//  mas não removê-lo, pois o campo PS de item é privado.
-		item.setPS_(ps2);
-		produto = (PS_Concrete) item.getPS_();
-		assertEquals(ps2, produto);
+		item_.setPS_(ps2_);
+		produto_ = (PS_Concrete) item_.getPS_();
+		assertEquals(ps2_, produto_);
 	}
 	
 	@Test
@@ -129,11 +129,11 @@ public class demo
 	
 		// produto = new PS_Concrete("P1", null); // Resulta em erro de compilação.
 		// A Facde de BDPS redireciona o pedido de criação de produto à classe BDPS:
-		produto = BDPS.getInstance().createNewPS("P1", "A", null);
+		produto_ = BDPS.getInstance().createNewPS("P1", "A", null);
 		
 		// BDPS contém uma lista de produtos e outra de Categoria Tributária,
 		//   vinculadas fortemente através de um índice comum:
-		assertEquals("A", BDPS_Facade.getTributeCat(produto));
+		assertEquals("A", BDPS_Facade.getTributeCat(produto_));
 	}
 	
 	@Test
@@ -145,7 +145,7 @@ public class demo
 		/**************************************/
 		// A NF criada pertence a uma classe cujo objeto é ainda mutável:
 		myNF_ = builderNF_.constructNF();
-		item1 = myNF_.addNewIV(ps1, 1, 10);
+		item1_ = myNF_.addNewIV(ps1_, 1, 10);
 		assertEquals(2, myNF_.sizeIVs());
 
 		// O método getStatus() imprime o estado atual da NF.
@@ -153,7 +153,7 @@ public class demo
 	}
 
 	@Test
-	public void test_Requisito_08(){
+	public void test_Requisito_07(){
 		/**************************************/
 		// Requisito #07:
 		// Restrição legal: Uma vez que esteja completamente preenchida com todos os seus
@@ -166,7 +166,110 @@ public class demo
 		//   inválidos. Se uma NF for corretamente validada, um objeto imutavel representandoa
 		//   deve ser passado como resposta ao usuárioprogramador.
 		/**************************************/
-		// Já implementei a validação da NF pelo banco de dados, mas sugou fazer os testes.
-		fail();
+		// Quando criada, a NF está em estado de elaboração, podendo ser modificada:
+		myNF_ = builderNF_.constructNF();
+		myNF_.addNewIV(ps1_, 2, 10);
+		
+		// A validação da NF é feito pelo BDNF, conforme mostrado abaixo:
+		finalMyNF_ = BDNF_Facade.validateNF(myNF_);
+		assertTrue(BDNF_Facade.contains(finalMyNF_));
+		
+		// O valor total de imposto já é calculado automaticamente:
+		assertEquals(43, finalMyNF_.getTotalTribute());
+		// A NF obtida pertence a uma classe Final com atributos final e protegidos,
+		//   de modo que uma vez validada, não é possível alterar suas informações:
+		assertTrue(finalMyNF_.isFinal());
+		
+		// É também inviável validar uma NF já validada, tendo em vista
+		//  que NF e NF_Final são duas subclasses diferentes:
+		assertNull(BDNF_Facade.validateNF(finalMyNF_));
+	}
+	
+	@Test
+	public void test_Requisito_11(){
+		/**************************************/
+		// Requisito #11:
+		// Restrição Legal: Cada NF validada deve ter um identificador único, gerado durante a
+		// validação, que nunca pode se repetir6. Uma vez validada, esse ID deve aparecer em
+		// qualquer impressão.
+		/**************************************/
+		// O ID único de cada NF é garantido pelo campo estático ID_ do BDNF,
+		//  que é incrementado sempre que uma nova finalNF é validada.
+		myNF_ = builderNF_.constructNF();
+		nf1_ = builderNF_.constructNF();
+		nf2_ = builderNF_.constructNF();
+		
+		// Cada vez que validateNF() é chamada, um novo ID incrementado é atribuído
+		finalMyNF_ = BDNF_Facade.validateNF(myNF_);
+		finalNf1_ = BDNF_Facade.validateNF(nf1_);
+		finalNf2_ = BDNF_Facade.validateNF(nf2_);
+		
+		// Observe o ID crescente das NFs validadas:
+		assertEquals("NF #11 validada.", finalMyNF_.getStatus());
+		assertEquals("NF #12 validada.", finalNf1_.getStatus());
+		assertEquals("NF #13 validada.", finalNf2_.getStatus());
+		
+		// A classe NF_Abstract também possui um método de impressão,
+		//  em que consta seu Status, seu ID e os seus IVs:
+		System.out.println("*** Requisito # 11 ***");
+		System.out.println(finalNf1_.toPrint());
+		System.out.println("**********************");
+	}
+	
+	@Test
+	public void test_Requisito_12(){
+		/**************************************/
+		// Requisito #12:
+		// [Removido]
+		/**************************************/
+		assertTrue(true);
+	}
+	
+	@Test
+	public void test_Requisito_14(){
+		/**************************************/
+		// Requisito #14:
+		// Requisito do product owner: uma vez criada uma NF (antes da validação), os seus
+		// itens de venda devem ser modificados, adicionados ou deletados apenas pelos
+		// metodos apropriados. Devese cuidar que não haja acesso de escrita inapropriado a
+		// lista de itens por outros meios.
+		/**************************************/
+		// A lista de IVs de NF é privada, de modo que ela somente pode ser
+		//   alterada pelos métodos apropriados, como mostrado abaixo:
+		
+		// A NF já é criada com um IV:
+		assertEquals(1, myNF_.sizeIVs());
+		
+		// Adicionando um novo IV pelo método apropriado:
+		item_ = myNF_.addNewIV(ps1_, 2, 100);
+		assertTrue(myNF_.containsIV(item_));
+		assertEquals(2, myNF_.sizeIVs());
+		
+		// Removendo um IV pelo método apropriado:
+		myNF_.removeIV(item_);
+		assertFalse(myNF_.containsIV(item_));
+		assertEquals(1, myNF_.sizeIVs());
+	}
+	
+	@Test
+	public void test_Requisito_15(){
+		/**************************************/
+		// Requisito #15:
+		// Requisito: Código de BD (mesmo que mockado), deve estar completamente
+		// separado, desacoplado do restante do sistema, e acessivel por uma API única, que
+		// é responsável por cadastros, buscas, submissões. Além disso, para simplificar logs,
+		// segurança, e desacoplamento, deve haver apenas um objeto (objeto, não classe)
+		// responsável por acessar o BD (isso representa uma restrição como “o seu aplicativo
+		// só pode fazer uma conexão com o BD”).
+		/**************************************/
+		// O código dos BDs foram colocados em um pacote à parte. Os BDs são acessados
+		//  somente mediante suas respectivas Facades, que são Singletons:
+		assertSame(BDNF_Facade.getInstance(), BDNF_Facade.getInstance());
+		assertSame(BDPS_Facade.getInstance(), BDPS_Facade.getInstance());
+		
+		// Os métodos dessa Facade são todos estáticos, simplificando o redirecionamento
+		//  de delegação de tarefas e evitando instanciações desnecessárias:
+		ps1_ = BDPS_Facade.getPS(3);
+		finalNf1_ = BDNF_Facade.getNF(3); 
 	}
 }

@@ -1,7 +1,9 @@
 package banco_dados;
 
 import java.util.ArrayList;
+
 import conceito_fiscal.NF;
+import conceito_fiscal.NF_Abstract;
 import conceito_fiscal.NF_Final;
 
 public class BDNF 
@@ -16,6 +18,7 @@ public class BDNF
 		//   pelo BDNF, gerando um Mock de Banco de dados.
 		BDNF_MockDados Mock = new BDNF_MockDados();
 		NFs_ = new ArrayList<NF>(Mock.getNFs_());
+		finalNFs_ = new ArrayList<NF_Final>();
 		for (nfID_ = 0; nfID_ < Mock.getNMockObjects(); nfID_++)
 			validateNF(NFs_.get(nfID_));
 	}
@@ -32,11 +35,11 @@ public class BDNF
 	/*   Manipulação dos ArrayLists   */
 	/**********************************/
 	// Operação de Validação de NF
-	public NF_Final validateNF(NF nf) {
+	public NF_Final validateNF(NF_Abstract nf) {
 		NF_Final finalNF = null;
 		if (!nf.isFinal())
 		{
-			finalNF = new NF_Final(nf, nfID_++);
+			finalNF = new NF_Final((NF) nf, nfID_++);
 			finalNFs_.add(finalNF);
 		}
 		return finalNF;
@@ -44,6 +47,9 @@ public class BDNF
 	// Obtendo finalNF do Banco de Dados
 	public NF_Final getNF(int ID){
 		return finalNFs_.get(ID);
+	}
+	public boolean contains(NF_Final nf){
+		return finalNFs_.contains(nf);
 	}
 	
 }

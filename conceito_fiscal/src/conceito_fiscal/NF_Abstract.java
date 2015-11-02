@@ -12,5 +12,24 @@ public abstract class NF_Abstract
 	public abstract int calculaImposto();
 	public abstract boolean isFinal();
 	public abstract String getStatus();
+	
+	public int getTotalTribute(){
+		return TotalTribute_;
+	}
+	/**********************************/
+	/*       Impressão da NF          */
+	/**********************************/
+	public String toPrint(){
+		String impressao = "";
+		impressao += getStatus();
+		for (IV item : IVs_)
+		{
+			impressao += "\n";
+			impressao += "Quant: "+item.getQuant_();
+			impressao += " $" + item.getPrice_();
+			impressao += " - " + item.getPSname_();
+		}
+		return impressao;
+	}
 }
 

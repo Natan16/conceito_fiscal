@@ -1,6 +1,6 @@
 package banco_dados;
 
-import conceito_fiscal.NF;
+import conceito_fiscal.NF_Abstract;
 import conceito_fiscal.NF_Final;
 
 public class BDNF_Facade 
@@ -20,7 +20,10 @@ public class BDNF_Facade
 	public static NF_Final getNF(int ID){
 		return BDNF.getInstance().getNF(ID);
 	}
-	public static NF_Final validateNF(NF nf){
+	public static NF_Final validateNF(NF_Abstract nf){
 		return BDNF.getInstance().validateNF(nf);
+	}
+	public static boolean contains(NF_Final nf){
+		return BDNF.getInstance().contains(nf);
 	}
 }

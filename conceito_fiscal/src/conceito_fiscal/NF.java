@@ -19,7 +19,6 @@ public class NF extends NF_Abstract
 	public boolean isFinal() {
 		return false;
 	}
-	
 	/**********************************/
 	/* Manipulação da Lista de IVs    */
 	/**********************************/
@@ -32,16 +31,20 @@ public class NF extends NF_Abstract
 	public boolean containsIV(IV item){
 		return IVs_.contains(item);
 	}
-	public IV getIV(int ID){
+	public IV getIV (int ID){
 		return IVs_.get(ID);
 	}
 	public ArrayList<IV> getIVs(){
 		return IVs_;
 	}
 	// Remove IV da lista IVs, desde que ela não fique vazia
-	public void removeIV(int ID){
+	public void removeIV(IV item){
 		if (IVs_.size() > 1)
-			IVs_.remove(IVs_.get(ID));
+			IVs_.remove(item);
+	}
+	public void removeID(int id){
+		if (IVs_.size() > 1)
+			IVs_.remove(IVs_.get(id));
 	}
 	public int sizeIVs(){
 		return IVs_.size();
