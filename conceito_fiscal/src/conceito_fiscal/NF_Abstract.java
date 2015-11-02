@@ -1,15 +1,35 @@
 package conceito_fiscal;
 
-import imposto.Imposto_Facade;
-import banco_dados.BDNF_Facade;
 import java.util.ArrayList;
 
 public abstract class NF_Abstract 
 {
-	protected static int ID_;
+	// Parâmetros básicos da NF
 	protected ArrayList<IV> IVs_;
-	protected BDNF_Facade BDNF_Facade_;
-	protected Imposto_Facade Imposto_Facade_;
+	protected int TotalTribute_;
+	
+	// Métodos da NF
 	public abstract int calculaImposto();
+	public abstract boolean isFinal();
+	public abstract String getStatus();
+	
+	public int getTotalTribute(){
+		return TotalTribute_;
+	}
+	/**********************************/
+	/*       Impressão da NF          */
+	/**********************************/
+	public String toPrint(){
+		String impressao = "";
+		impressao += getStatus();
+		for (IV item : IVs_)
+		{
+			impressao += "\n";
+			impressao += "Quant: "+item.getQuant_();
+			impressao += " $" + item.getPrice_();
+			impressao += " - " + item.getPSname_();
+		}
+		return impressao;
+	}
 }
 

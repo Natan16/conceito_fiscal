@@ -1,5 +1,7 @@
 package conceito_fiscal;
 
+import banco_dados.BDPS_Facade;
+
 public class NF_Builder 
 {
 	private NF nf_;
@@ -8,13 +10,8 @@ public class NF_Builder
 	// Builder básico de NF
 	public NF constructNF(){
 		nf_ = new NF();
-		ps_ = new PS_Concrete("produto","A", null);
+		ps_ = BDPS_Facade.createNewPS("produto","A", null);
 		nf_.addNewIV(ps_, 1, 10);
 		return nf_;
-	}
-	
-	// Builder de NF final
-	public NF_Final constructFinalNF(NF nf){
-		return new NF_Final(nf);
 	}
 }

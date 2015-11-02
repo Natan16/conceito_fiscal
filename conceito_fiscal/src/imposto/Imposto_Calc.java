@@ -16,6 +16,11 @@ public class Imposto_Calc
 			Imposto_Calc.INSTANCE = new Imposto_Calc();
 		return Imposto_Calc.INSTANCE;
 	}
+	
+	public Imposto_Calc(){
+		info_ = new Imposto_Info();
+		tribute_ = new ImpostoA();
+	}
 		
 	// Seu principal método, que calcula a Taxa de Imposto
 	//   sobre uma dada lista de IVs.
@@ -25,6 +30,7 @@ public class Imposto_Calc
 		{
 			// CalculaImposto deve depender da categoria do IV
 			//   usando a correta implementação da interface Imposto
+			
 			totalTax += tribute_.calculaImposto(iv);
 		}
 		totalTax += info_.taxa;

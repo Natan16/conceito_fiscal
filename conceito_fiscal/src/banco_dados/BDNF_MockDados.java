@@ -8,7 +8,12 @@ import conceito_fiscal.NF_Builder;
 
 public class BDNF_MockDados 
 {
+	private final int nMockObjects_ = 10;
 	private ArrayList<NF> NFs_;
+	
+	public int getNMockObjects(){
+		return nMockObjects_;
+	}
 	
 	// Cria uma lista aleatória de NFs
 	public Collection<? extends NF> getNFs_() 
@@ -17,7 +22,7 @@ public class BDNF_MockDados
 		nfBuilder.constructNF();
 		
 		NFs_ = new ArrayList<NF>();
-		for (int i = 0; i <10; i++)
+		for (int i = 0; i < nMockObjects_; i++)
 			NFs_.add(nfBuilder.constructNF());
 		return NFs_;
 	}

@@ -13,13 +13,16 @@ public class BDPS_Facade
 	}
 		
 	// Métodos Facade:
-	public BDPS getBDPSinstance(){
+	public static BDPS getBDPSinstance(){
 		return BDPS.getInstance();
 	}
-	public void adicionaPS(PS_Concrete ps){
-		BDPS.getInstance().adicionaPS(ps);
+	public static PS_Concrete createNewPS(String nome, String categoria, PS_Concrete PS){
+		return BDPS.getInstance().createNewPS(nome, categoria, PS);
 	}
-	public PS_Concrete getPS(int ID){
+	public static PS_Concrete getPS(int ID){
 		return BDPS.getInstance().getPS(ID);
+	}
+	public static String getTributeCat(PS_Concrete PS){
+		return BDPS.getInstance().getTributeCat(PS);
 	}
 }
