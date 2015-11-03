@@ -190,11 +190,12 @@ public class demo
 		item_ = myNF_.addNewIV(ps1_, 2, 100);
 		ImpostoA impostoA = new ImpostoA();
 		ImpostoB impostoB = new ImpostoB();
-		impostoB.calculaImposto(item_);
 		//cada imposto tem uma alíquota default para produtos e serviços
 		assertEquals(impostoA.calculaImposto(item_),220);
-		assertEquals(impostoA.calculaImposto(item_),240);
-		
+		assertEquals(impostoB.calculaImposto(item_),240);
+		//um determinado produto tem uma categoria de impostos, que pode conter uma alíquota
+		//diferenciada
+		//produto_;
  	}
 	
 	@Test
