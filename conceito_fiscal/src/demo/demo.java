@@ -1,6 +1,8 @@
 package demo;
 
 import static org.junit.Assert.*;
+import imposto.ImpostoA;
+import imposto.ImpostoB;
 
 import org.junit.After;
 import org.junit.Before;
@@ -178,6 +180,24 @@ public class demo
 	}
 	
 	@Test
+	public void test_Requisito_08(){
+		/**************************************/
+		/* Requisito #08:Requisito: Há um conjunto de varios impostos a serem aplicados em uma
+		NF. Cada imposto possui uma aliquota default para produtos e serviços, e cada categoria
+		tributária de P/S pode ter uma aliquota diferenciada . O BD:P/S é mantido
+		 atualizado e confiamos nas aliquotas armazenadas.*/
+		/**************************************/
+		item_ = myNF_.addNewIV(ps1_, 2, 100);
+		ImpostoA impostoA = new ImpostoA();
+		ImpostoB impostoB = new ImpostoB();
+		impostoB.calculaImposto(item_);
+		//cada imposto tem uma alíquota default para produtos e serviços
+		assertEquals(impostoA.calculaImposto(item_),220);
+		assertEquals(impostoA.calculaImposto(item_),240);
+		
+ 	}
+	
+	@Test
 	public void test_Requisito_11(){
 		/**************************************/
 		// Requisito #11:
@@ -216,6 +236,8 @@ public class demo
 		/**************************************/
 		assertTrue(true);
 	}
+	
+	
 	
 	@Test
 	public void test_Requisito_14(){
