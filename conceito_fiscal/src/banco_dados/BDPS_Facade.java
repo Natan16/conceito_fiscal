@@ -25,4 +25,8 @@ public class BDPS_Facade
 	public static String getTributeCat(PS_Concrete PS){
 		return BDPS.getInstance().getTributeCat(PS);
 	}
+	
+	public static float getAliquota(String cat){
+		return BDPS.getInstance().getAliquota(cat);
+	}
 }

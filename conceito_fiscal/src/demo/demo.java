@@ -18,7 +18,7 @@ public class demo
 	// VariÃ¡veis usadas para os testes
 	static NF_Builder builderNF_;
 	NF_Final finalMyNF_, finalNf1_, finalNf2_;
-	PS_Concrete produto_, ps1_, ps2_;
+	PS_Concrete produto_, ps1_, ps2_, ps3_;
 	NF myNF_, nf1_, nf2_;
 	IV item_, item1_;
 	
@@ -36,6 +36,7 @@ public class demo
 		myNF_ = builderNF_.constructNF();
 		ps1_ = BDPS_Facade.getPS(3);
 		ps2_ = BDPS_Facade.getPS(7);
+		ps3_ = BDPS_Facade.getPS(5);
 	}
 
 	@After
@@ -188,16 +189,16 @@ public class demo
 		tributária de P/S pode ter uma aliquota diferenciada . O BD:P/S é mantido
 		 atualizado e confiamos nas aliquotas armazenadas.*/
 		/**************************************/
-		//item_ = myNF_.addNewIV(ps1_, 2, 100);
 		int imposto = myNF_.calculaImposto();
 		//cada imposto tem uma alíquota default para produtos e serviços
 		assertEquals(21,imposto);
 		item_ = myNF_.addNewIV(ps2_, 2, 100);
 		imposto = myNF_.calculaImposto();
 		assertEquals(261,imposto);
-		//um determinado produto tem uma categoria de impostos, que pode conter uma alíquota
-		//diferenciada
-		//produto_;
+		//ps da categoria A+ , que tem imposto tipo A com uma aliquota diferenciada
+		item_ = myNF_.addNewIV(ps3_, 1, 100);
+		imposto = myNF_.calculaImposto();
+		assertEquals(381,imposto);
  	}
 	
 	@Test

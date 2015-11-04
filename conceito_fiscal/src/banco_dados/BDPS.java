@@ -19,6 +19,10 @@ public class BDPS
 		aliquotas_ = new HashMap<String,Float>(Mock.getAliquotas());
 	}
 	
+	public float getAliquota(String cat){
+		return aliquotas_.get(cat);
+	}
+	
 	// Padrão Singleton:
 	private static BDPS INSTANCE;
 	public static BDPS getInstance() {
