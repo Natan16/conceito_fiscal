@@ -3,6 +3,7 @@ package demo;
 import static org.junit.Assert.*;
 import imposto.ImpostoA;
 import imposto.ImpostoB;
+import imposto.Imposto_Calc;
 
 import org.junit.After;
 import org.junit.Before;
@@ -143,7 +144,7 @@ public class demo
 		assertEquals(2, myNF_.sizeIVs());
 
 		// O mÃ©todo getStatus() imprime o estado atual da NF.
-		assertEquals("NF em elaboraÃ§Ã£o", myNF_.getStatus());
+		assertEquals("NF em elaboração", myNF_.getStatus());
 	}
 
 	@Test
@@ -187,12 +188,13 @@ public class demo
 		tributária de P/S pode ter uma aliquota diferenciada . O BD:P/S é mantido
 		 atualizado e confiamos nas aliquotas armazenadas.*/
 		/**************************************/
-		item_ = myNF_.addNewIV(ps1_, 2, 100);
-		ImpostoA impostoA = new ImpostoA();
-		ImpostoB impostoB = new ImpostoB();
+		//item_ = myNF_.addNewIV(ps1_, 2, 100);
+		int imposto = myNF_.calculaImposto();
 		//cada imposto tem uma alíquota default para produtos e serviços
-		assertEquals(impostoA.calculaImposto(item_),220);
-		assertEquals(impostoB.calculaImposto(item_),240);
+		assertEquals(21,imposto);
+		item_ = myNF_.addNewIV(ps2_, 2, 100);
+		imposto = myNF_.calculaImposto();
+		assertEquals(261,imposto);
 		//um determinado produto tem uma categoria de impostos, que pode conter uma alíquota
 		//diferenciada
 		//produto_;

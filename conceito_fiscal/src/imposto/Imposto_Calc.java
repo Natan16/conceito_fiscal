@@ -1,7 +1,10 @@
 package imposto;
 
 import java.util.ArrayList;
+
+import banco_dados.BDPS_Facade;
 import conceito_fiscal.IV;
+import conceito_fiscal.PS_Concrete;
 
 public class Imposto_Calc 
 {
@@ -19,23 +22,25 @@ public class Imposto_Calc
 	
 	public Imposto_Calc(){
 		info_ = new Imposto_Info();
-		tribute_ = new ImpostoA();
 	}
 		
 	// Seu principal método, que calcula a Taxa de Imposto
 	//   sobre uma dada lista de IVs.
 	public int tax(ArrayList<IV> IVs_) {
 		int totalTax = 0;
-		for (IV iv : IVs_)
+		for (IV item : IVs_)
 		{
+			PS_Concrete ps = (PS_Concrete) item.getPS_();
+			String cat = BDPS_Facade.getTributeCat(ps); 
+			tribute_ = Imposto_Factory.getImposto(cat);
 			// CalculaImposto deve depender da categoria do IV
 			//   usando a correta implementação da interface Imposto
-			
-			totalTax += tribute_.calculaImposto(iv);
+			totalTax += tribute_.calculaImposto(item);
 		}
 		totalTax += info_.taxa;
 		return totalTax;
 	}
+	
 	
 	// Getters e Setters
 	public Imposto_Info getInfo_() {
