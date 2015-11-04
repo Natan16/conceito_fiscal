@@ -233,6 +233,13 @@ public class demo
 		 */
 		/**************************************/
 		
+		int imposto = myNF_.calculaImposto(); 
+		assertEquals(21,imposto); //aqui a estratégia de calculo de imposto é normal
+		item_ = myNF_.addNewIV(ps2_, 1, 10000); //quando o valor total dos itens de venda 
+		//passa de 1000, a estratégia muda e é cobrado 10% a mais sobre cada p/s
+		imposto = myNF_.calculaImposto();
+		assertEquals(13222,imposto);
+		
 		
  	}
 	
