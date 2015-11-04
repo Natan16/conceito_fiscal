@@ -28,15 +28,11 @@ public class Imposto_Calc
 	//   sobre uma dada lista de IVs.
 	public int tax(ArrayList<IV> IVs_) {
 		int totalTax = 0;
-		for (IV item : IVs_)
-		{
-			PS_Concrete ps = (PS_Concrete) item.getPS_();
-			String cat = BDPS_Facade.getTributeCat(ps); 
-			tribute_ = Imposto_Factory.getImposto(cat);
-			// CalculaImposto deve depender da categoria do IV
-			//   usando a correta implementação da interface Imposto
-			totalTax += tribute_.calculaImposto(item);
-		}
+		Imposto_Strategy strategy = null;
+		//calcula o valor total dos IVs e a partir daí determina o estado
+		strategy = Imposto_Strategy.getStrategy(IVs_);
+	    
+		totalTax = (int) strategy.calc(IVs_);
 		totalTax += info_.taxa;
 		return totalTax;
 	}

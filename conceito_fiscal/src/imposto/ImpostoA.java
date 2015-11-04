@@ -14,7 +14,7 @@ public class ImpostoA implements Imposto
 	@Override
 	public int calculaImposto(IV item) {
 		int itemTax = 0;
-		itemTax += item.getQuant_()*item.getPrice_();
+		itemTax += item.getQuant_()*item.getPrice_() ;
 		itemTax *= 1 + aliquota_;
 		return itemTax;
 	}

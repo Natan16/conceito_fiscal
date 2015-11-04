@@ -223,10 +223,18 @@ public class demo
 		assertEquals(32,imposto);
  	}
 	
-	
-	
-	
-	
+	@Test
+	public void test_Requisito_10(){
+		/**************************************/
+		/* Requisito #10:Inclusive um imposto pode depender da sequencia de IVs e/ou P/S
+		 *  anteriores ou posteriores na mesma NF, portando deve ser possível ao imposto 
+		 *  manter estado durante o processamento de uma sequencia de IVs. 
+		 *  [DP Strategy, Command,Visitor]
+		 */
+		/**************************************/
+		
+		
+ 	}
 	
 	@Test
 	public void test_Requisito_11(){
