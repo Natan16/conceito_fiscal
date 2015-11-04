@@ -202,6 +202,33 @@ public class demo
  	}
 	
 	@Test
+	public void test_Requisito_09(){
+		/**************************************/
+		/* Requisito #09:: Deve ser fácil para o usuário­programador incluir um novo imposto. Deve
+		haver uma interface padronizada para a programação de um novo imposto. Nos
+		seus testes pode criar impostos simples, mas deve ser fácil programar a inclusao de
+		qualquer novo imposto. Um novo imposto pode envolver cálculos arbitrariamente
+		complexos , mas sempre depende das quantidades,
+		preços e categorias tributárias
+		dos P/S. [DP Strategy, Command, Visitor]
+		/**************************************/
+		
+		/*Imposto é  a interface que facilita a criação de novos impostos
+		Imposto possui o método calculaImposto que pode realizar calculos arbitrariamente
+		complexos no cálculo do imposto*/
+		int imposto = myNF_.calculaImposto(); //já tem um item da categoria ps1_ e um valor inicial de 10
+		assertEquals(21,imposto); 
+		item_ = myNF_.addNewIV(ps1_, 1, 10); //aqui o mesmo item, mostrando que o calculo é o mesmo
+		imposto = myNF_.calculaImposto();
+		assertEquals(32,imposto);
+ 	}
+	
+	
+	
+	
+	
+	
+	@Test
 	public void test_Requisito_11(){
 		/**************************************/
 		// Requisito #11:
