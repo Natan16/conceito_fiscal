@@ -27,11 +27,10 @@ public class Imposto_Calc
 	// Seu principal método, que calcula a Taxa de Imposto
 	//   sobre uma dada lista de IVs.
 	public int tax(ArrayList<IV> IVs_) {
-		int totalTax = 0;
 		Imposto_Strategy strategy = null;
 		//calcula o valor total dos IVs e a partir daí determina o estado
 		strategy = Imposto_Strategy.getStrategy(IVs_);
-		totalTax = (int) strategy.calc(IVs_);
+		int totalTax = (int) strategy.calc(IVs_);
 		return totalTax;
 	}
 	

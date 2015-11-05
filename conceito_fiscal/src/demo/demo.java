@@ -19,7 +19,7 @@ public class demo
 	static NF_Builder builderNF_;
 	NF_Final finalMyNF_, finalNf1_, finalNf2_;
 	PS_Concrete produto_, ps1_, ps2_, ps3_;
-	NF myNF_, nf1_, nf2_;
+	NF myNF_, myNF_2, nf1_, nf2_;
 	IV item_, item1_;
 	
 	// Algumas classes maiores e mais complexas sÃ£o criadas
@@ -34,6 +34,7 @@ public class demo
 	@Before
 	public void setUp() throws Exception {
 		myNF_ = builderNF_.constructNF();
+		myNF_2 = builderNF_.constructNF();
 		ps1_ = BDPS_Facade.getPS(3);
 		ps2_ = BDPS_Facade.getPS(7);
 		ps3_ = BDPS_Facade.getPS(5);
@@ -352,7 +353,17 @@ public class demo
 		poderiam ser muito maiores do que repassar e somar um valor. [Data Object]
 		 */
 		/**************************************/
-		
+		int imposto = myNF_.calculaImposto(); 
+		assertEquals(21,imposto); //aqui a estratégia de calculo de imposto é normal
+		item_ = myNF_.addNewIV(ps2_, 1, 20000); //é realizada uma compra acima de 20000 e a nota
+		BDNF_Facade.validateNF(myNF_);//fiscal é finalizada
+		imposto = myNF_2.calculaImposto();//a estratégia de calculo de imposto é  
+		//modificada com base nas notas fiscais anteriores ( na caso myNF_ )
+		//observe que a classe Imposto_Info não possui apensa um float, mas sim uma lista
+		//com os valores de cada nota fiscal já validada, permitindo cálculos arbitrariamente
+		//complexos
+		assertEquals(22,imposto);
+			
 	}
 	
 }

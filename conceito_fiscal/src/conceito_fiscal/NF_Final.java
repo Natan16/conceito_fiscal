@@ -14,7 +14,7 @@ public class NF_Final extends NF_Abstract
 		IVs_ = new ArrayList<IV>(nf.getIVs());
 		TotalTribute_ = this.calculaImposto();
 		ID_ = id;
-		Imposto_Info.addNF(this);//toda vez que uma nota fiscal é finalizada ele pode ser
+		Imposto_Info.addNF(TotalTribute_);//toda vez que uma nota fiscal é finalizada ele pode ser
 		//usada pra calcular impostos sobre novas notas fiscais
 	}
 	
