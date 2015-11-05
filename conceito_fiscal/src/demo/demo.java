@@ -332,4 +332,27 @@ public class demo
 		ps1_ = BDPS_Facade.getPS(3);
 		finalNf1_ = BDNF_Facade.getNF(3); 
 	}
+	
+	@Test
+	public void test_Requisito_19(){
+		/**************************************/
+		/* Requisito #19:
+		 Restrição Legal: O cálculo de um imposto pode depender não apenas dos IV e P/S
+		 de uma nota fiscal, mas também do conjunto e valores de NFs anteriores ao longo
+		 do tempo. Isso deve ser representado no código pela utilização de dados anteriores
+		 adicionais como entrada extra para o cálculo de um imposto. Cada imposto portanto
+		 pode definir um tipo de dados (classe) apropriado para os seus próprios cálculos
+		 arbitrariamente complicado. Neste trabalho basta criar um classe associada a um
+		imposto, e fornecer um objeto preenchido com valores anteriores ao calcular o
+		imposto de uma NF. Um exemplo simples: o objeto­entrada contem a soma dos
+		valores do imposto pagos no mes em todas as NF, e à medida que a soma aumenta,
+		a aĺiquota para novas NF aumenta. Portanto o valor acumulado deve ser repassado
+		em todos os calculos em cada NF. Note que não vale repassar só um float porque
+		esse é um exemplo simples: a quantidade de dados e a complexidade dos cálculos
+		poderiam ser muito maiores do que repassar e somar um valor. [Data Object]
+		 */
+		/**************************************/
+		
+	}
+	
 }

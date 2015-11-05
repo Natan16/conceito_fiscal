@@ -31,9 +31,7 @@ public class Imposto_Calc
 		Imposto_Strategy strategy = null;
 		//calcula o valor total dos IVs e a partir daí determina o estado
 		strategy = Imposto_Strategy.getStrategy(IVs_);
-	    
 		totalTax = (int) strategy.calc(IVs_);
-		totalTax += info_.taxa;
 		return totalTax;
 	}
 	

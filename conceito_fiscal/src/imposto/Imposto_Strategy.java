@@ -9,16 +9,20 @@ import conceito_fiscal.PS_Concrete;
 public abstract class Imposto_Strategy {
 	public static Imposto_Strategy getStrategy(ArrayList<IV> IVs_){
 		int totalBruto = 0;
+		float totalAnterior = 0.0f;
 		for( IV item : IVs_)
 			totalBruto += item.getPrice_()*item.getQuant_();
+		//aqui a depedência com as notas fiscais anteriores fica evidente
+		totalAnterior = Imposto_Info.getTotalAnterior();
 		
-		if ( totalBruto > 1000)
+		if ( totalBruto > 1000 || totalAnterior > 10000)
 			  return new Imposto_Strategy_high();
 		return new Imposto_Strategy_low();
 	}
 	public float calc(ArrayList<IV> IVs_){
 		Imposto tribute_;
 		float totalTax = 0;
+		totalTax += Imposto_Info.taxa;
 		for (IV item : IVs_)
 		{
 			PS_Concrete ps = (PS_Concrete) item.getPS_();
