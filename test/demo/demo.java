@@ -18,7 +18,7 @@ public class demo
 	// VariÃ¡veis usadas para os testes
 	static NF_Builder builderNF_;
 	NF_Final finalMyNF_, finalNf1_, finalNf2_;
-	PS_Concrete produto_, ps1_, ps2_;
+	PS_Abstract produto_, ps1_, ps2_;
 	NF myNF_, nf1_, nf2_;
 	IV item_, item1_;
 	
@@ -90,13 +90,13 @@ public class demo
 		//   um de seus parÃ¢metros Ã© um dado produto PS. Assim todo
 		//   IV se referirÃ¡ sempre a exatamente um produto ou serviÃ§o PS.
 		item_ = myNF_.addNewIV(ps1_, 2, 100);
-		produto_ = (PS_Concrete) item_.getPS_();
+		produto_ = item_.getPS_();
 		assertEquals(ps1_, produto_);
 		
 		// Posso no mÃ¡ximo alterar o seu produto ou serviÃ§o usando um Setter,
 		//  mas nÃ£o removÃª-lo, pois o campo PS de item Ã© privado.
 		item_.setPS_(ps2_);
-		produto_ = (PS_Concrete) item_.getPS_();
+		produto_ = item_.getPS_();
 		assertEquals(ps2_, produto_);
 	}
 	
@@ -106,7 +106,15 @@ public class demo
 		// Requisito #04:
 		// RestriÃ§Ã£o legal: Um P/S deve sempre pertencer a um IV ou a um outro P/S.
 		/**************************************/
-		fail();
+            item_ = myNF_.addNewIV(ps1_, 2, 100);
+            //IV contem PS (item contem ps1_)
+		produto_ = item_.getPS_();
+		assertEquals(ps1_, produto_);
+                
+            //PS contem PS (ps4_ contem ps2_)
+                PS_Concrete ps4_;
+                ps4_ = (PS_Concrete)BDPS.getInstance().createNewPS("P1", "A", ps2_);
+                assertEquals(ps2_, ps4_.getPS_());
 	}
 	
 	
@@ -144,7 +152,7 @@ public class demo
 		assertEquals(2, myNF_.sizeIVs());
 
 		// O mÃ©todo getStatus() imprime o estado atual da NF.
-		assertEquals("NF em elaboração", myNF_.getStatus());
+		assertEquals("NF em elaboracao", myNF_.getStatus());
 	}
 
 	@Test

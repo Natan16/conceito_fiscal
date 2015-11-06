@@ -1,12 +1,14 @@
 package banco_dados;
 
+import conceito_fiscal.PS_Abstract;
 import java.util.ArrayList;
 
 import conceito_fiscal.PS_Concrete;
+import conceito_fiscal.PS_Concrete_Folha;
 
 public class BDPS 
 {
-	private ArrayList<PS_Concrete> PSs_;
+	private ArrayList<PS_Abstract> PSs_;
 	private ArrayList<String> TributeCat_;
 	// Construtor de BDNF usando PS
 	public BDPS(){
@@ -15,7 +17,7 @@ public class BDPS
 		TributeCat_ = new ArrayList<>(Mock.getTributeCat());
 	}
 	
-	// Padrão Singleton:
+	// Padrï¿½o Singleton:
 	private static BDPS INSTANCE;
 	public static BDPS getInstance() {
 		if (BDPS.INSTANCE == null)
@@ -24,24 +26,27 @@ public class BDPS
 	}
 
 	/**********************************/
-	/*   Manipulação dos ArrayLists   */
+	/*   Manipulaï¿½ï¿½o dos ArrayLists   */
 	/**********************************/
-	// Operações de add/remove no ArrayList:
-	public PS_Concrete createNewPS(String nome, String categoria, PS_Concrete PS){
-		PS_Concrete newPS = PS_Concrete.createNewPS(nome, PS);
-		PSs_.add(newPS);
-		TributeCat_.add(categoria);
-		return newPS;
+	// Operaï¿½ï¿½es de add/remove no ArrayList:
+	public PS_Abstract createNewPS(String nome, String categoria, PS_Abstract PS){
+            PS_Abstract newPS;
+            if (PS == null)
+                newPS = PS_Concrete_Folha.createNewPS(nome);
+            else newPS = PS_Concrete.createNewPS(nome, PS);
+            PSs_.add(newPS);
+            TributeCat_.add(categoria);
+            return newPS;
 	}
-	public void removePS(PS_Concrete PS){
+	public void removePS(PS_Abstract PS){
 		TributeCat_.remove(PSs_.indexOf(PS));
 		PSs_.remove(PS);
 	}
-	// Operações de busca no ArrayList:
-	public PS_Concrete getPS(int ID){
+	// Operaï¿½ï¿½es de busca no ArrayList:
+	public PS_Abstract getPS(int ID){
 		return PSs_.get(ID);
 	}
-	public String getTributeCat(PS_Concrete PS){
+	public String getTributeCat(PS_Abstract PS){
 		return TributeCat_.get(PSs_.indexOf(PS));
 	}
 }

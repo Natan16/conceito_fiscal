@@ -13,16 +13,16 @@ public class NF extends NF_Abstract
 	// Checagem do Status da NF.
 	@Override
 	public String getStatus() {
-		return "NF em elaboração";
+		return "NF em elaboracao";
 	}
 	@Override
 	public boolean isFinal() {
 		return false;
 	}
 	/**********************************/
-	/* Manipulação da Lista de IVs    */
+	/* Manipulaï¿½ï¿½o da Lista de IVs    */
 	/**********************************/
-	// O IV adicionado à NF é construído dentro da mesma.
+	// O IV adicionado ï¿½ NF ï¿½ construï¿½do dentro da mesma.
 	public IV addNewIV(PS_Abstract ps, int quant, int price){
 		IV item = new IV(this, ps, quant, price);
 		IVs_.add(item);
@@ -37,7 +37,7 @@ public class NF extends NF_Abstract
 	public ArrayList<IV> getIVs(){
 		return IVs_;
 	}
-	// Remove IV da lista IVs, desde que ela não fique vazia
+	// Remove IV da lista IVs, desde que ela nï¿½o fique vazia
 	public void removeIV(IV item){
 		if (IVs_.size() > 1)
 			IVs_.remove(item);
@@ -51,7 +51,7 @@ public class NF extends NF_Abstract
 	}
 	
 	/**********************************/
-	/*       Cálculo de Impostos      */
+	/*       Cï¿½lculo de Impostos      */
 	/**********************************/
 	public int calculaImposto(){
 		return Imposto_Facade.tax(IVs_);

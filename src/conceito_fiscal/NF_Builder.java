@@ -5,9 +5,9 @@ import banco_dados.BDPS_Facade;
 public class NF_Builder 
 {
 	private NF nf_;
-	private PS_Concrete ps_;
+	private PS_Abstract ps_;
 
-	// Builder básico de NF
+	// Builder bï¿½sico de NF
 	public NF constructNF(){
 		nf_ = new NF();
 		ps_ = BDPS_Facade.createNewPS("produto","A", null);
