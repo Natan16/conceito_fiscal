@@ -2,6 +2,7 @@ package banco_dados;
 
 import conceito_fiscal.PS_Abstract;
 import conceito_fiscal.PS_Concrete;
+import java.util.ArrayList;
 
 public class BDPS_Facade 
 {
@@ -15,9 +16,9 @@ public class BDPS_Facade
 		
 	// M�todos Facade:
 	public static BDPS getBDPSinstance(){
-		return BDPS.getInstance();
+            return BDPS.getInstance();
 	}
-	public static PS_Abstract createNewPS(String nome, String categoria, PS_Abstract PS){
+	public static PS_Abstract createNewPS(String nome, String categoria, ArrayList<PS_Abstract> PS){
 		return BDPS.getInstance().createNewPS(nome, categoria, PS);
 	}
 	public static PS_Abstract getPS(int ID){
