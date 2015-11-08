@@ -6,7 +6,6 @@ public abstract class PS_Abstract {
 	public String getNome() {
 		return nome_;
 	}
-
 	// [Imutable Object] A classe abstrata PS e seus filhos nao possuem
 	// nenhum método setter, por isso ela é imutável, ou seja, todos os
 	// seus atributos sao setados uma vez soh.

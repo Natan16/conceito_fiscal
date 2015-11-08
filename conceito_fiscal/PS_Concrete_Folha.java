@@ -9,7 +9,6 @@ public class PS_Concrete_Folha extends PS_Abstract {
 	public static PS_Concrete_Folha createNewPS(String nome) {
 		return new PS_Concrete_Folha(nome);
 	}
-
 	@Override
 	public boolean isFolha() {
 		return true;
