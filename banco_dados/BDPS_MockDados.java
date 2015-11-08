@@ -3,8 +3,6 @@ package banco_dados;
 import conceito_fiscal.PS_Abstract;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import conceito_fiscal.PS_Concrete;
 import conceito_fiscal.PS_Concrete_Folha;
 
 public class BDPS_MockDados 

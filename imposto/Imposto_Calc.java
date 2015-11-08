@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import banco_dados.BDPS_Facade;
 import conceito_fiscal.IV;
 import conceito_fiscal.PS_Abstract;
-import conceito_fiscal.PS_Concrete;
 
 public class Imposto_Calc 
 {

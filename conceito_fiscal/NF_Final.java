@@ -4,30 +4,32 @@ import imposto.Imposto_Facade;
 
 import java.util.ArrayList;
 
-public class NF extends NF_Abstract
-{
-	public NF() {
-		IVs_ = new ArrayList<IV>();
+public class NF_Final extends NF_Abstract
+{	
+	protected final int ID_;
+	
+	// Construtor: finalNF deve ser igual a nf, porém final.
+	protected NF_Final(NF nf, int id){
+		IVs_ = new ArrayList<IV>(nf.getIVs());
+		TotalTribute_ = this.calculaImposto();
+		ID_ = id;
 	}
 	
 	// Checagem do Status da NF.
 	@Override
 	public String getStatus() {
-		return "NF em elaboracao";
+		return "NF #"+ID_+" validada.";
 	}
 	@Override
 	public boolean isFinal() {
-		return false;
+		return true;
+	}
+	public int getID(){
+		return ID_;
 	}
 	/**********************************/
-	/* Manipulaï¿½ï¿½o da Lista de IVs    */
+	/* Manipulação da Lista de IVs    */
 	/**********************************/
-	// O IV adicionado ï¿½ NF ï¿½ construï¿½do dentro da mesma.
-	public IV addNewIV(PS_Abstract ps, int quant, int price){
-		IV item = new IV(this, ps, quant, price);
-		IVs_.add(item);
-		return item;
-	}
 	public boolean containsIV(IV item){
 		return IVs_.contains(item);
 	}
@@ -37,21 +39,11 @@ public class NF extends NF_Abstract
 	public ArrayList<IV> getIVs(){
 		return IVs_;
 	}
-	// Remove IV da lista IVs, desde que ela nï¿½o fique vazia
-	public void removeIV(IV item){
-		if (IVs_.size() > 1)
-			IVs_.remove(item);
-	}
-	public void removeID(int id){
-		if (IVs_.size() > 1)
-			IVs_.remove(IVs_.get(id));
-	}
 	public int sizeIVs(){
 		return IVs_.size();
 	}
-	
 	/**********************************/
-	/*       Cï¿½lculo de Impostos      */
+	/*       Cálculo de Impostos      */
 	/**********************************/
 	public int calculaImposto(){
 		return Imposto_Facade.tax(IVs_);

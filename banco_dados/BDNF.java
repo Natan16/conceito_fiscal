@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import conceito_fiscal.NF;
 import conceito_fiscal.NF_Abstract;
+import conceito_fiscal.NF_Builder;
 import conceito_fiscal.NF_Final;
 
 public class BDNF 
@@ -39,7 +40,7 @@ public class BDNF
 		NF_Final finalNF = null;
 		if (!nf.isFinal())
 		{
-			finalNF = new NF_Final((NF) nf, nfID_++);
+			finalNF = NF_Builder.constructNF_Final((NF) nf, nfID_++);
 			finalNFs_.add(finalNF);
 		}
 		return finalNF;

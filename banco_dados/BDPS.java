@@ -8,14 +8,13 @@ import conceito_fiscal.PS_Concrete_Folha;
 
 public class BDPS 
 {
-	private ArrayList<PS_Abstract> PSs_, lista_PS;
+	private ArrayList<PS_Abstract> PSs_;
 	private ArrayList<String> TributeCat_;
 	// Construtor de BDNF usando PS
 	public BDPS(){
 		BDPS_MockDados Mock = new BDPS_MockDados();
 		PSs_ = new ArrayList<>(Mock.getPSs_());
-		TributeCat_ = new ArrayList<>(Mock.getTributeCat());
-                lista_PS = new ArrayList<PS_Abstract>();
+		TributeCat_ = new ArrayList<>(Mock.getTributeCat());   
 	}
 	
 	// Padr�o Singleton:

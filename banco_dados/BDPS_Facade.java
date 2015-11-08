@@ -1,7 +1,6 @@
 package banco_dados;
 
 import conceito_fiscal.PS_Abstract;
-import conceito_fiscal.PS_Concrete;
 import java.util.ArrayList;
 
 public class BDPS_Facade 

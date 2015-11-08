@@ -8,7 +8,7 @@ public class IV
 	
 	// O construtor de IV já garante que ele se refere a 
 	//   exatamente uma NF e a um PS.
-	public IV (NF nf, PS_Abstract ps, int quant, int price){
+	protected IV (NF nf, PS_Abstract ps, int quant, int price){
 		NF_ = nf;
 		PS_ = ps;
 		quant_ = quant;
