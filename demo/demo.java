@@ -7,6 +7,7 @@ import org.junit.*;
 import conceito_fiscal.*;
 import banco_dados.BDNF_Facade;
 import banco_dados.BDPS_Facade;
+import imposto.Imposto_Facade;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ public class demo {
 	// VariÃ¡veis usadas para os testes
 	NF_Final finalMyNF_, finalNf1_, finalNf2_;
 	PS_Abstract produto_, ps1_, ps2_, ps3_, ps4_;
-	NF myNF_, nf1_, nf2_;
+	NF myNF_, myNF_2, nf1_, nf2_;
 	IV item_, item1_;
 	ArrayList<PS_Abstract> lista_PS;
 
@@ -29,9 +30,10 @@ public class demo {
 	@Before
 	public void setUp() throws Exception {
 		myNF_ = NF_Builder.constructNF();
+		myNF_2 = NF_Builder.constructNF();
 		ps1_ = BDPS_Facade.getPS(3);
 		ps2_ = BDPS_Facade.getPS(7);
-		ps3_ = BDPS_Facade.getPS(9);
+		ps3_ = BDPS_Facade.getPS(5);
 		lista_PS = new ArrayList<PS_Abstract>();
 	}
 
@@ -212,28 +214,64 @@ public class demo {
 	}
 
 	@Test
-	public void test_Requisito_08() {
+	public void test_Requisito_08(){
 		/**************************************/
-		/*
-		 * Requisito #08:Requisito: Há um conjunto de varios impostos a serem
-		 * aplicados em uma NF. Cada imposto possui uma aliquota default para
-		 * produtos e serviços, e cada categoria tributária de P/S pode ter
-		 * uma aliquota diferenciada . O BD:P/S é mantido atualizado e
-		 * confiamos nas aliquotas armazenadas.
-		 */
+		/* Requisito #08:Requisito: Há um conjunto de varios impostos a serem aplicados em uma
+		NF. Cada imposto possui uma aliquota default para produtos e serviços, e cada categoria
+		tributária de P/S pode ter uma aliquota diferenciada . O BD:P/S é mantido
+		 atualizado e confiamos nas aliquotas armazenadas.*/
 		/**************************************/
-		// item_ = myNF_.addNewIV(ps1_, 2, 100);
 		int imposto = myNF_.calculaImposto();
-		// cada imposto tem uma alíquota default para produtos e serviços
-		assertEquals(21, imposto);
+		//cada imposto tem uma alíquota default para produtos e serviços
+		assertEquals(21,imposto);
 		item_ = myNF_.addNewIV(ps2_, 2, 100);
 		imposto = myNF_.calculaImposto();
-		assertEquals(261, imposto);
-		// um determinado produto tem uma categoria de impostos, que pode conter
-		// uma alíquota
-		// diferenciada
-		// produto_;
-	}
+		assertEquals(261,imposto);
+		//ps da categoria A+ , que tem imposto tipo A com uma aliquota diferenciada
+		item_ = myNF_.addNewIV(ps3_, 1, 100);
+		imposto = myNF_.calculaImposto();
+		assertEquals(381,imposto);
+ 	}
+	
+	@Test
+	public void test_Requisito_09(){
+		/**************************************/
+		/* Requisito #09:: Deve ser fácil para o usuário­programador incluir um novo imposto. Deve
+		haver uma interface padronizada para a programação de um novo imposto. Nos
+		seus testes pode criar impostos simples, mas deve ser fácil programar a inclusao de
+		qualquer novo imposto. Um novo imposto pode envolver cálculos arbitrariamente
+		complexos , mas sempre depende das quantidades,
+		preços e categorias tributárias
+		dos P/S. [DP Strategy, Command, Visitor]
+		/**************************************/
+		
+		/*Imposto é  a interface que facilita a criação de novos impostos
+		Imposto possui o método calculaImposto que pode realizar calculos arbitrariamente
+		complexos no cálculo do imposto*/
+		int imposto = myNF_.calculaImposto(); //já tem um item da categoria ps1_ e um valor inicial de 10
+		assertEquals(21,imposto); 
+		item_ = myNF_.addNewIV(ps1_, 1, 10); //aqui o mesmo item, mostrando que o calculo é o mesmo
+		imposto = myNF_.calculaImposto();
+		assertEquals(32,imposto);
+ 	}
+	
+	@Test
+	public void test_Requisito_10(){
+		/**************************************/
+		/* Requisito #10:Inclusive um imposto pode depender da sequencia de IVs e/ou P/S
+		 *  anteriores ou posteriores na mesma NF, portando deve ser possível ao imposto 
+		 *  manter estado durante o processamento de uma sequencia de IVs. 
+		 *  [DP Strategy, Command,Visitor]
+		 */
+		/**************************************/
+		
+		int imposto = myNF_.calculaImposto(); 
+		assertEquals(21,imposto); //aqui a estratégia de calculo de imposto é normal
+		item_ = myNF_.addNewIV(ps2_, 1, 10000); //quando o valor total dos itens de venda 
+		//passa de 1000, a estratégia muda e é cobrado 10% a mais sobre cada p/s
+		imposto = myNF_.calculaImposto();
+		assertEquals(13222,imposto);
+ 	}
 
 	@Test
 	public void test_Requisito_11() {
@@ -337,6 +375,24 @@ public class demo {
 		ps1_ = BDPS_Facade.getPS(3);
 		finalNf1_ = BDNF_Facade.getNF(3);
 	}
+	
+	@Test
+	public void test_Requisito_16() {
+		/**************************************/
+		// Requisito #16:
+		// Requisito: C�digo de calculo de impostos devem estar separados e desacoplados
+		// de forma a poderem ser modificados sem afetar o resto do sistema. [Strategy]
+		/**************************************/
+		// O c�lculo de imposto foi encapsulado no package imposto.
+		// O �nico que pode acess�-lo � a classe NF_Abstract,
+		//  atrav�s de sua Fachada est�tica Imposto_Facade:
+		
+		assertEquals(myNF_.calculaImposto(), Imposto_Facade.tax(myNF_.getIVs()));
+		
+		// Esse teste garante a equival�ncia entre usar diretamente a Facade
+		//  e fazer NF_Abstract chamar o m�todo da Facade.
+
+	}
 
 	@Test
 	public void test_Requisito_17() {
@@ -406,4 +462,35 @@ public class demo {
 		//             ps1_     ps2_
 	}
 
+	@Test
+	public void test_Requisito_19(){
+		/**************************************/
+		/* Requisito #19:
+		 Restrição Legal: O cálculo de um imposto pode depender não apenas dos IV e P/S
+		 de uma nota fiscal, mas também do conjunto e valores de NFs anteriores ao longo
+		 do tempo. Isso deve ser representado no código pela utilização de dados anteriores
+		 adicionais como entrada extra para o cálculo de um imposto. Cada imposto portanto
+		 pode definir um tipo de dados (classe) apropriado para os seus próprios cálculos
+		 arbitrariamente complicado. Neste trabalho basta criar um classe associada a um
+		imposto, e fornecer um objeto preenchido com valores anteriores ao calcular o
+		imposto de uma NF. Um exemplo simples: o objeto­entrada contem a soma dos
+		valores do imposto pagos no mes em todas as NF, e à medida que a soma aumenta,
+		a aĺiquota para novas NF aumenta. Portanto o valor acumulado deve ser repassado
+		em todos os calculos em cada NF. Note que não vale repassar só um float porque
+		esse é um exemplo simples: a quantidade de dados e a complexidade dos cálculos
+		poderiam ser muito maiores do que repassar e somar um valor. [Data Object]
+		 */
+		/**************************************/
+		int imposto = myNF_.calculaImposto(); 
+		assertEquals(21,imposto); //aqui a estratégia de calculo de imposto é normal
+		item_ = myNF_.addNewIV(ps2_, 1, 20000); //é realizada uma compra acima de 20000 e a nota
+		BDNF_Facade.validateNF(myNF_);//fiscal é finalizada
+		imposto = myNF_2.calculaImposto();//a estratégia de calculo de imposto é  
+		//modificada com base nas notas fiscais anteriores ( na caso myNF_ )
+		//observe que a classe Imposto_Info não possui apensa um float, mas sim uma lista
+		//com os valores de cada nota fiscal já validada, permitindo cálculos arbitrariamente
+		//complexos
+		assertEquals(22,imposto);
+			
+	}
 }

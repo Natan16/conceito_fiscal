@@ -1,7 +1,10 @@
 package banco_dados;
 
 import conceito_fiscal.PS_Abstract;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import conceito_fiscal.PS_Concrete;
 import conceito_fiscal.PS_Concrete_Folha;
@@ -10,11 +13,14 @@ public class BDPS
 {
 	private ArrayList<PS_Abstract> PSs_;
 	private ArrayList<String> TributeCat_;
+	private Map<String,Float> aliquotas_;
+	
 	// Construtor de BDNF usando PS
 	public BDPS(){
 		BDPS_MockDados Mock = new BDPS_MockDados();
 		PSs_ = new ArrayList<>(Mock.getPSs_());
 		TributeCat_ = new ArrayList<>(Mock.getTributeCat());   
+		aliquotas_ = new HashMap<String,Float>(Mock.getAliquotas());
 	}
 	
 	// Padr�o Singleton:
@@ -25,6 +31,10 @@ public class BDPS
 		return BDPS.INSTANCE;
 	}
 
+	public float getAliquota(String cat){
+		return aliquotas_.get(cat);
+	}
+	
 	/**********************************/
 	/*   Manipula��o dos ArrayLists   */
 	/**********************************/

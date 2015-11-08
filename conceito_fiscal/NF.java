@@ -1,7 +1,5 @@
 package conceito_fiscal;
 
-import imposto.Imposto_Facade;
-
 import java.util.ArrayList;
 
 public class NF extends NF_Abstract
@@ -48,13 +46,6 @@ public class NF extends NF_Abstract
 	}
 	public int sizeIVs(){
 		return IVs_.size();
-	}
-	
-	/**********************************/
-	/*       C�lculo de Impostos      */
-	/**********************************/
-	public int calculaImposto(){
-		return Imposto_Facade.tax(IVs_);
 	}
 }
 

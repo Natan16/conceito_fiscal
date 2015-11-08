@@ -1,5 +1,7 @@
 package conceito_fiscal;
 
+import imposto.Imposto_Facade;
+
 import java.util.ArrayList;
 
 public abstract class NF_Abstract 
@@ -9,7 +11,6 @@ public abstract class NF_Abstract
 	protected int TotalTribute_;
 	
 	// Métodos da NF
-	public abstract int calculaImposto();
 	public abstract boolean isFinal();
 	public abstract String getStatus();
 	
@@ -30,6 +31,12 @@ public abstract class NF_Abstract
 			impressao += " - " + item.getPSname_();
 		}
 		return impressao;
+	}
+	/**********************************/
+	/*       Cálculo de Impostos      */
+	/**********************************/
+	public int calculaImposto(){
+		return Imposto_Facade.tax(IVs_);
 	}
 }
 
