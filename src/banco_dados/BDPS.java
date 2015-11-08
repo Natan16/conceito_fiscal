@@ -8,13 +8,14 @@ import conceito_fiscal.PS_Concrete_Folha;
 
 public class BDPS 
 {
-	private ArrayList<PS_Abstract> PSs_;
+	private ArrayList<PS_Abstract> PSs_, lista_PS;
 	private ArrayList<String> TributeCat_;
 	// Construtor de BDNF usando PS
 	public BDPS(){
 		BDPS_MockDados Mock = new BDPS_MockDados();
 		PSs_ = new ArrayList<>(Mock.getPSs_());
 		TributeCat_ = new ArrayList<>(Mock.getTributeCat());
+                lista_PS = new ArrayList<PS_Abstract>();
 	}
 	
 	// Padr�o Singleton:
@@ -29,11 +30,11 @@ public class BDPS
 	/*   Manipula��o dos ArrayLists   */
 	/**********************************/
 	// Opera��es de add/remove no ArrayList:
-	public PS_Abstract createNewPS(String nome, String categoria, PS_Abstract PS){
+	public PS_Abstract createNewPS(String nome, String categoria, ArrayList<PS_Abstract> lista_PS){
             PS_Abstract newPS;
-            if (PS == null)
+            if (lista_PS == null)
                 newPS = PS_Concrete_Folha.createNewPS(nome);
-            else newPS = PS_Concrete.createNewPS(nome, PS);
+            else newPS = PS_Concrete.createNewPS(nome, lista_PS);
             PSs_.add(newPS);
             TributeCat_.add(categoria);
             return newPS;
