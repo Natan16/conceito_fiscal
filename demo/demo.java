@@ -373,34 +373,30 @@ public class demo {
 		// todas as folhas do Ãºltimo nÃ­vel [Composite e Visitor]
 		/**************************************/
 
-		// [1ª etapa]:
-		// criamos uma lista e adicionamos PSs a ela
+		PS_Concrete ps4_, ps5_;
+		// [1ª etapa] Criamos uma lista e adicionamos ps1_ e ps2_ a ela
 		lista_PS.add(ps1_);
 		lista_PS.add(ps2_);
 
-		// ps4_ Ã© o ps que subcontrata ps1_ e ps2_, entao os possui
-		// em sua lista.
-		PS_Concrete ps4_;
+		// ps4_ subcontrata ps1_ e ps2_, entao os possui em sua lista de filhos.
+		
 		ps4_ = (PS_Concrete)BDPS_Facade.createNewPS("P4", "A", lista_PS);
 		assertEquals(ps2_, ps4_.getPSs_(1));
 		assertEquals(ps1_, ps4_.getPSs_(0));
 		
-		
-		// [2ª etapa]:
-		// criamos uma lista e adicionamos ps4_ a ela
+		// [2ª etapa] Criamos uma lista e adicionamos ps4_ e ps_3 a ela
 		lista_PS.clear();
 		lista_PS.add(ps4_);
 		lista_PS.add(ps3_);
 
-		// ps5_ é um produto que subcontrata ps4_. 
+		// ps5_  subcontrata ps3_ e ps4_. 
 		//   assim, ps5_ subsubcontrata ps2_ e ps1_ (Composite)
-		PS_Concrete ps5_;
 		ps5_ = (PS_Concrete) BDPS_Facade.createNewPS("P5", "A", lista_PS);
 		assertEquals(ps4_, ps5_.getPSs_(0));
 		assertEquals(ps3_, ps5_.getPSs_(1));
 		
 		// Eu sei que há violação da Lei de Demeter abaixo, mas quero
-		//   deixar bem clara a estrutura em árvore, de ps5_ subsubcontratar ps2_ e ps1_.
+		//   deixar bem clara a estrutura em árvore: ps5_ subsubcontrata ps2_ e ps1_.
 		assertEquals(ps2_, ((PS_Concrete)ps5_.getPSs_(0)).getPSs_(1));
 		assertEquals(ps1_, ((PS_Concrete)ps5_.getPSs_(0)).getPSs_(0));
 		
