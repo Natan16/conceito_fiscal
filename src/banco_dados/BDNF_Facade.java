@@ -5,7 +5,7 @@ import conceito_fiscal.NF_Final;
 
 public class BDNF_Facade 
 {
-	// Padrão Singleton:
+	// Padrï¿½o Singleton:
 	private static BDNF_Facade INSTANCE;
 	public static BDNF_Facade getInstance() {
 		if (BDNF_Facade.INSTANCE == null)
@@ -13,7 +13,7 @@ public class BDNF_Facade
 		return BDNF_Facade.INSTANCE;
 	}
 		
-	// Métodos Facade:
+	// Mï¿½todos Facade:
 	public static BDNF getBDNFinstance(){
 		return BDNF.getInstance();
 	}
