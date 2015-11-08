@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import conceito_fiscal.*;
 import banco_dados.*;
+import java.util.ArrayList;
 
 public class demo 
 {
@@ -21,7 +22,7 @@ public class demo
 	PS_Abstract produto_, ps1_, ps2_;
 	NF myNF_, nf1_, nf2_;
 	IV item_, item1_;
-	
+	ArrayList<PS_Abstract> lista_PS;
 	// Algumas classes maiores e mais complexas sÃ£o criadas
 	//  apenas uma vez BeforeClass, como os bancos de dados:
 	@BeforeClass
@@ -36,6 +37,7 @@ public class demo
 		myNF_ = builderNF_.constructNF();
 		ps1_ = BDPS_Facade.getPS(3);
 		ps2_ = BDPS_Facade.getPS(7);
+                lista_PS = new ArrayList<PS_Abstract>();
 	}
 
 	@After
@@ -111,10 +113,11 @@ public class demo
 		produto_ = item_.getPS_();
 		assertEquals(ps1_, produto_);
                 
-            //PS contem PS (ps4_ contem ps2_)
+            //PS contem PS (ps4_ contem lista de ps que contem ps2_)
+                lista_PS.add(ps2_);
                 PS_Concrete ps4_;
-                ps4_ = (PS_Concrete)BDPS.getInstance().createNewPS("P1", "A", ps2_);
-                assertEquals(ps2_, ps4_.getPS_());
+                ps4_ = (PS_Concrete)BDPS.getInstance().createNewPS("P1", "A", lista_PS);
+                assertEquals(ps2_, ps4_.getPSs_().get(0));
 	}
 	
 	
@@ -314,6 +317,33 @@ public class demo
                 ps1_ = BDPS_Facade.getPS(3);
                 assertTrue(ps1_.isFinal());
                 
+        }
+        
+        @Test
+        public void test_Requisito_18(){
+            /**************************************/
+		// Requisito #18:
+		//Cada produto ou servico pode ser subdivido em outros
+                //produtos e/ou servicos.A quantidade de subdivisões depende do P/S específico. Por
+                //exemplo, SPintura sempre tem “SMaode Obra” e “PTinta”.Não há limitação na
+                //profundidade das subdivisões8. Por exemplo, uma subclasse de “SMao de Obra”
+                //pode permitir um subcontratado, e o subcontratado subsubcontrata
+                //outro, etc. A NFdeve listar todas as subdivisões inclusive 
+                //todas as folhas do último nível [Composite e Visitor]
+            /**************************************/
+            
+            //criamos uma lista e adicionamos PSs a ela
+             lista_PS.add(ps1_);
+             lista_PS.add(ps2_);
+             
+             //ps4_ é o ps que subcontrata ps1_ e ps2_, entao os possui
+             //em sua lista.
+             PS_Concrete ps4_;
+             ps4_ = (PS_Concrete)BDPS.getInstance().createNewPS("P1", "A", lista_PS);
+             assertEquals(ps2_, ps4_.getPSs_().get(1));
+             assertEquals(ps1_, ps4_.getPSs_().get(0));
+             
+             
         }
         
 }
