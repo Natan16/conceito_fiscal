@@ -297,6 +297,23 @@ public class demo
 		ps1_ = BDPS_Facade.getPS(3);
 		finalNf1_ = BDNF_Facade.getNF(3); 
 	}
+        @Test
+        public void test_Requisito_17(){
+            /**************************************/
+		// Requisito #17:
+		// Requisito: Todas as entidades armazenadas em BD devem 
+                //corresponder a entidades imutaveis uma vez retirados do
+                //BD. PSs, NFs validadas.[Imutable Object]
+		/**************************************/
+                
+                //aqui, pegamos uma NF do BD
+                finalNf1_ = BDNF_Facade.getNF(3); 
+                assertTrue(finalNf1_.isFinal());
+                
+                //Aqui pegamos um PS do BD
+                ps1_ = BDPS_Facade.getPS(3);
+                assertTrue(ps1_.isFinal());
+                
+        }
         
 }
-//aubpsdhaisudkásduh
