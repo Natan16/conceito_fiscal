@@ -8,7 +8,6 @@ import conceito_fiscal.*;
 import banco_dados.BDNF_Facade;
 import banco_dados.BDPS_Facade;
 import imposto.Imposto_Facade;
-
 import java.util.ArrayList;
 
 public class demo {
@@ -29,8 +28,8 @@ public class demo {
 	// para os testes, como por exemplo uma nova NF:
 	@Before
 	public void setUp() throws Exception {
-		myNF_ = NF_Builder.constructNF();
-		myNF_2 = NF_Builder.constructNF();
+		myNF_ = NF_Builder.constructNF(0,1,10);
+		myNF_2 = NF_Builder.constructNF(0,1,10);
 		ps1_ = BDPS_Facade.getPS(3);
 		ps2_ = BDPS_Facade.getPS(7);
 		ps3_ = BDPS_Facade.getPS(5);
@@ -56,7 +55,7 @@ public class demo {
 		/**************************************/
 		// A classe builderNF se encarrega de construir uma NF com
 		// exatamente um IV inicial, sendo que ela nÃ£o inicia vazia:
-		myNF_ = NF_Builder.constructNF();
+		myNF_ = NF_Builder.constructNF(0,1,10);
 		assertEquals(1, myNF_.sizeIVs());
 
 		// Quando tentamos remover algum elemento da NF,
@@ -159,7 +158,7 @@ public class demo {
 		// uma eventual impressÃ£o.
 		/**************************************/
 		// A NF criada pertence a uma classe cujo objeto Ã© ainda mutÃ¡vel:
-		myNF_ = NF_Builder.constructNF();
+		myNF_ = NF_Builder.constructNF(0,1,10);
 		item1_ = myNF_.addNewIV(ps1_, 1, 10);
 		assertEquals(2, myNF_.sizeIVs());
 
@@ -191,7 +190,7 @@ public class demo {
 		/**************************************/
 		// Quando criada, a NF estÃ¡ em estado de elaboraÃ§Ã£o, podendo
 		// ser modificada:
-		myNF_ = NF_Builder.constructNF();
+		myNF_ = NF_Builder.constructNF(0,1,10);
 		myNF_.addNewIV(ps1_, 2, 10);
 
 		// A validaÃ§Ã£o da NF Ã© feito pelo BDNF, conforme mostrado
@@ -221,13 +220,24 @@ public class demo {
 		tributária de P/S pode ter uma aliquota diferenciada . O BD:P/S é mantido
 		 atualizado e confiamos nas aliquotas armazenadas.*/
 		/**************************************/
+		// Cada imposto tem uma alíquota default para produtos e serviços
+		// TaxaTotal = 10 (produto) + 1 (10% produto) + 10 (taxa fixa)
 		int imposto = myNF_.calculaImposto();
-		//cada imposto tem uma alíquota default para produtos e serviços
 		assertEquals(21,imposto);
+		
+		// TaxaTotal = 10    (produto) + 1  (10% produto)
+		//           + 2*100 (produto) + 40 (20% produto) + 10 (taxa fixa)
 		item_ = myNF_.addNewIV(ps2_, 2, 100);
 		imposto = myNF_.calculaImposto();
 		assertEquals(261,imposto);
-		//ps da categoria A+ , que tem imposto tipo A com uma aliquota diferenciada
+		
+		// Ps da categoria A+ , que tem imposto tipo A com uma aliquota diferenciada
+		// TaxaTotal = 10    (produto) + 1  (10% produto)
+		//           + 2*100 (produto) + 40 (20% produto) 
+		//           + 1*100 (produto) + 20 (20% produto) +10 (taxa fixa)
+		// ps3_ pertence � categoria tribut�ria A+. Usa classe de c�lculo ImpostoA,
+		//  igual ao produto inicial da NF (aliquota default de 10%), por�m sua
+		//  categoria altera essa al�quota para 20%.
 		item_ = myNF_.addNewIV(ps3_, 1, 100);
 		imposto = myNF_.calculaImposto();
 		assertEquals(381,imposto);
@@ -248,9 +258,15 @@ public class demo {
 		/*Imposto é  a interface que facilita a criação de novos impostos
 		Imposto possui o método calculaImposto que pode realizar calculos arbitrariamente
 		complexos no cálculo do imposto*/
-		int imposto = myNF_.calculaImposto(); //já tem um item da categoria ps1_ e um valor inicial de 10
+		
+		//já tem um item da categoria ps1_ e um valor inicial de 10
+		// TaxaTotal = 10 (produto) + 1 (10% produto) + 10 (taxa fixa)
+		int imposto = myNF_.calculaImposto(); 
 		assertEquals(21,imposto); 
-		item_ = myNF_.addNewIV(ps1_, 1, 10); //aqui o mesmo item, mostrando que o calculo é o mesmo
+		// Aqui o mesmo item, mostrando que o calculo é o mesmo
+		// TaxaTotal = 10 (produto0) + 1 (10% produto)
+		//			 + 10 (produto1) + 1 (10% produto) + 10 (taxa fixa)
+		myNF_.addNewIV(ps1_, 1, 10); 
 		imposto = myNF_.calculaImposto();
 		assertEquals(32,imposto);
  	}
@@ -265,10 +281,19 @@ public class demo {
 		 */
 		/**************************************/
 		
+		// Aqui a estratégia de calculo de imposto é normal
+		// TaxaTotal = 10 (produto) + 1  (10% produto) + 10 (taxa fixa)
 		int imposto = myNF_.calculaImposto(); 
-		assertEquals(21,imposto); //aqui a estratégia de calculo de imposto é normal
-		item_ = myNF_.addNewIV(ps2_, 1, 10000); //quando o valor total dos itens de venda 
-		//passa de 1000, a estratégia muda e é cobrado 10% a mais sobre cada p/s
+		assertEquals(21,imposto); 
+		
+		// Quando o valor total bruto dos itens de venda ultrapassa 1000,
+		// a estratégia muda e é cobrado 10% a mais sobre cada p/s
+		// TaxaTotal = (10 (produto)  + 1  (10% produto))*1.1 = 12
+		//          +  (1000(produto) + 200(20% produto))*1.1 = 1320
+		//          +  10 (taxa fixa)
+		// Neste caso, o fator *1.1 indica a mudan�a de estrat�gia, 
+		//  penalizando compradores com um alto valor total bruto na NF.
+		myNF_.addNewIV(ps2_, 1, 10000); 
 		imposto = myNF_.calculaImposto();
 		assertEquals(13222,imposto);
  	}
@@ -286,9 +311,9 @@ public class demo {
 		// O ID Ãºnico de cada NF Ã© garantido pelo campo estÃ¡tico ID_ do
 		// BDNF,
 		// que Ã© incrementado sempre que uma nova finalNF Ã© validada.
-		myNF_ = NF_Builder.constructNF();
-		nf1_ = NF_Builder.constructNF();
-		nf2_ = NF_Builder.constructNF();
+		myNF_ = NF_Builder.constructNF(0,1,10);
+		nf1_ = NF_Builder.constructNF(0,1,10);
+		nf2_ = NF_Builder.constructNF(0,1,10);
 
 		// Cada vez que validateNF() Ã© chamada, um novo ID incrementado Ã©
 		// atribuÃ­do
@@ -391,8 +416,8 @@ public class demo {
 		
 		// Esse teste garante a equival�ncia entre usar diretamente a Facade
 		//  e fazer NF_Abstract chamar o m�todo da Facade.
-
 	}
+	
 
 	@Test
 	public void test_Requisito_17() {
@@ -410,7 +435,6 @@ public class demo {
 		// Aqui pegamos um PS do BD
 		ps1_ = BDPS_Facade.getPS(3);
 		assertTrue(ps1_.isFinal());
-
 	}
 
 	@Test
@@ -481,15 +505,23 @@ public class demo {
 		poderiam ser muito maiores do que repassar e somar um valor. [Data Object]
 		 */
 		/**************************************/
+		Imposto_Facade.startInfo();
+		// Aqui a estratégia de calculo de imposto é normal
+		// TaxaTotal = 10 (produto)  + 1  (10% produto)
+		//           + 100(produto)  +10  (10% produto) + 10 (taxa fixa)
+		myNF_.addNewIV(ps1_, 1, 100);
 		int imposto = myNF_.calculaImposto(); 
-		assertEquals(21,imposto); //aqui a estratégia de calculo de imposto é normal
-		item_ = myNF_.addNewIV(ps2_, 1, 20000); //é realizada uma compra acima de 20000 e a nota
-		BDNF_Facade.validateNF(myNF_);//fiscal é finalizada
-		imposto = myNF_2.calculaImposto();//a estratégia de calculo de imposto é  
-		//modificada com base nas notas fiscais anteriores ( na caso myNF_ )
-		//observe que a classe Imposto_Info não possui apensa um float, mas sim uma lista
-		//com os valores de cada nota fiscal já validada, permitindo cálculos arbitrariamente
-		//complexos
+		assertEquals(131, imposto); 
+		
+		// A estratégia de calculo de imposto é  modificada com base nas notas fiscais anteriores
+		// ( na caso myNF_ ), cobrando 1% do valor desta na pr�xima taxa��o de NF.
+		// Observe que a classe Imposto_Info não possui apensa um float, mas sim uma lista
+		//com os valores de cada nota fiscal já validada, permitindo cálculos complexos.
+		BDNF_Facade.validateNF(myNF_);
+		// Aqui a estratégia de calculo de imposto muda com myNF_ validada:
+		// TaxaTotal = 10 (produto)  + 1  (10% produto) + 10 (taxa fixa)
+		//           + 1 (1% do valor taxado em myNF_)
+		imposto = myNF_2.calculaImposto();
 		assertEquals(22,imposto);
 			
 	}

@@ -1,5 +1,7 @@
 package banco_dados;
 
+import imposto.Imposto_Info;
+
 import java.util.ArrayList;
 
 import conceito_fiscal.NF;
@@ -41,6 +43,9 @@ public class BDNF
 		if (!nf.isFinal())
 		{
 			finalNF = NF_Builder.constructNF_Final((NF) nf, nfID_++);
+			// Toda vez que uma nota fiscal é finalizada ele pode ser
+			//usada pra calcular impostos sobre novas notas fiscais
+			Imposto_Info.addNF(finalNF.getTotalTribute());
 			finalNFs_.add(finalNF);
 		}
 		return finalNF;

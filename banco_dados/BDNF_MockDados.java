@@ -17,12 +17,10 @@ public class BDNF_MockDados
 	
 	// Cria uma lista aleatória de NFs
 	public Collection<? extends NF> getNFs_() 
-	{
-		NF_Builder.constructNF();
-		
+	{	
 		NFs_ = new ArrayList<NF>();
 		for (int i = 0; i < nMockObjects_; i++)
-			NFs_.add(NF_Builder.constructNF());
+			NFs_.add(NF_Builder.constructNF(1, 1, 10));
 		return NFs_;
 	}
 }

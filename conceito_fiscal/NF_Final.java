@@ -1,7 +1,5 @@
 package conceito_fiscal;
 
-import imposto.Imposto_Info;
-
 import java.util.ArrayList;
 
 public class NF_Final extends NF_Abstract
@@ -13,8 +11,6 @@ public class NF_Final extends NF_Abstract
 		IVs_ = new ArrayList<IV>(nf.getIVs());
 		TotalTribute_ = this.calculaImposto();
 		ID_ = id;
-		Imposto_Info.addNF(TotalTribute_);//toda vez que uma nota fiscal é finalizada ele pode ser
-		//usada pra calcular impostos sobre novas notas fiscais
 	}
 	
 	// Checagem do Status da NF.

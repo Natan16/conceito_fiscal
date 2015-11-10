@@ -1,6 +1,7 @@
 package imposto;
 
 import java.util.ArrayList;
+
 import conceito_fiscal.IV;
 
 public class Imposto_Facade 
@@ -14,7 +15,10 @@ public class Imposto_Facade
 	}
 	
 	// Métodos Facade:
-	public static int tax(ArrayList<IV> iVs_){
-		return Imposto_Calc.getInstance().tax(iVs_);
+	public static int tax(ArrayList<IV> IVs_){
+		return Imposto_Strategy.tax(IVs_);
+	}
+	public static void startInfo(){
+		Imposto_Info.startInfo();
 	}
 }
