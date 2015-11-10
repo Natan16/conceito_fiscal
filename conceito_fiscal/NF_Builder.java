@@ -11,7 +11,7 @@ public class NF_Builder
 		nf_.addNewIV(ps_, quant, price);
 		return nf_;
 	}
-	// Builder b�sico de NF_Final
+	// Builder basico de NF_Final
 	public static NF_Final constructNF_Final(NF nf, int id){
 		NF_Final nf_ = new NF_Final(nf, id);
 		return nf_;
